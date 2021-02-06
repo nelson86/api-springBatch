@@ -1,26 +1,17 @@
 package com.narabel.batch.batch.simpleDataList.conf;
 
+import com.narabel.batch.batch.BaseBatchConfiguration;
 import com.narabel.batch.batch.simpleDataList.job.DataSDLReader;
 import com.narabel.batch.batch.simpleDataList.job.DataSDLWriter;
+import com.narabel.batch.batch.simpleDataList.listener.ChunkCountListener;
 import com.narabel.batch.entity.MockData;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@EnableBatchProcessing
-public class JobSimpleDataListBatchConfiguration {
-
-    @Autowired
-    private JobBuilderFactory jobBuilderFactory;
-
-    @Autowired
-    private StepBuilderFactory stepBuilderFactory;
+public class JobSimpleDataListBatchConfiguration extends BaseBatchConfiguration {
 
     @Bean
     public DataSDLReader dataSDLReader() {
@@ -40,6 +31,8 @@ public class JobSimpleDataListBatchConfiguration {
                 .<MockData, MockData>chunk(10)
                 .reader(dataSDLReader)
                 .writer(dataSDLWriter)
+                .listener(new ChunkCountListener())
+                //.allowStartIfComplete(true) // el paso siempre se ejecutara nuevamente
                 .build();
     }
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Log4j2
 @Service
-public class ExecuteBatchSimple implements ExecuteBath {
+public class ExecuteBatchSimpleDataList implements ExecuteBath {
 
     @Autowired
     JobLauncher jobLauncher;
@@ -22,9 +22,6 @@ public class ExecuteBatchSimple implements ExecuteBath {
 
     @Override
     public void runBatch() {
-
-        JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
-
         try {
             JobExecution execution = jobLauncher.run(jobSimpleListData, this.defaultJobParameters() );
 
